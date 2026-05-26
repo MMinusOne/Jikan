@@ -3,6 +3,7 @@ import type {
   JikanCharacterDetailResponse,
   JikanMangaCharacterData,
   JikanResponse,
+  MangaData,
 } from "./types";
 
 export interface JikanConfig {
