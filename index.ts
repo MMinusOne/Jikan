@@ -196,7 +196,7 @@ export default class JikanAPI {
         | "manhua";
       filter?: "publishing" | "upcoming" | "bypopularity" | "favorite";
     } = {},
-  ): Promise<JikanResponse<CharacterData>> {
+  ): Promise<JikanResponse<MangaData>> {
     const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
