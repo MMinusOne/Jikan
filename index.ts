@@ -1,3 +1,10 @@
+import type {
+  CharacterData,
+  JikanCharacterDetailResponse,
+  JikanMangaCharacterData,
+  JikanResponse,
+} from "./types";
+
 export interface JikanConfig {
   baseUrl?: string;
   timeout?: number;
@@ -162,7 +169,7 @@ export default class JikanAPI {
       letter?: string; // first letter of title
       magazines?: string; // comma-separated magazine IDs
     } = {},
-  ): Promise<any> {
+  ): Promise<JikanResponse<CharacterData>> {
     const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
@@ -189,7 +196,7 @@ export default class JikanAPI {
         | "manhua";
       filter?: "publishing" | "upcoming" | "bypopularity" | "favorite";
     } = {},
-  ): Promise<any> {
+  ): Promise<JikanResponse<CharacterData>> {
     const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
@@ -206,11 +213,11 @@ export default class JikanAPI {
 
   // ==================== CHARACTER ENDPOINTS ====================
 
-  async getCharacter(id: number): Promise<any> {
+  async getCharacter(id: number): Promise<{ data: CharacterData }> {
     return this.fetchWithRetry(`/characters/${id}`);
   }
 
-  async getCharacterFull(id: number): Promise<any> {
+  async getCharacterFull(id: number): Promise<JikanCharacterDetailResponse> {
     return this.fetchWithRetry(`/characters/${id}/full`);
   }
 
@@ -222,7 +229,7 @@ export default class JikanAPI {
     return this.fetchWithRetry(`/characters/${id}/anime`);
   }
 
-  async getCharacterManga(id: number): Promise<any> {
+  async getCharacterManga(id: number): Promise<JikanMangaCharacterData> {
     return this.fetchWithRetry(`/characters/${id}/manga`);
   }
 
@@ -250,7 +257,10 @@ export default class JikanAPI {
     );
   }
 
-  async getTopCharacters(page?: number, limit?: number): Promise<any> {
+  async getTopCharacters(
+    page?: number,
+    limit?: number,
+  ): Promise<JikanResponse<CharacterData>> {
     const params = new URLSearchParams();
     if (page) params.append("page", page.toString());
     if (limit) params.append("limit", limit.toString());
